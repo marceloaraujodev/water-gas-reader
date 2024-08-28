@@ -31,11 +31,6 @@ const BillSchema: Schema<IBill> = new mongoose.Schema({
     enum: Object.values(MeasureType),
     required: true,
   },
-  read: {
-    type: Boolean,
-    default: false,
-    required: true, 
-  }
 }, {
   timestamps: true
 });
