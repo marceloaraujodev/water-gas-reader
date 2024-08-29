@@ -20,7 +20,7 @@ export async function result(responseMimeType: string, responseUri: string): Pro
             fileUri: responseUri
           }
         },
-        { text: "This is a image from a water meter, please return only the numbers numbers in your response" },
+        { text: "This is a image from a water meter, please return only the numerical numbers in your response" },
       ]);
       
       console.log(result.response.text());
