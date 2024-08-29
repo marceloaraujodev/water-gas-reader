@@ -1,168 +1,85 @@
-Water-Gas Reader
-Description
+# **Water-Gas Reader**
+
+## **Description**
 A backend service for reading water and gas meter values from images using the Google Gemini API. This service supports uploading images, confirming readings, and listing past measurements for specific customers.
 
-Features
-POST /upload: Upload an image to be processed and read by the Gemini API.
-PATCH /confirm: Confirm or correct the reading value for a given measurement.
-GET /<customer code>/list: Retrieve a list of measurements for a specified customer, with optional filtering by measurement type.
-Setup
-Prerequisites
-Node.js (v18 or later)
-Docker
-Docker Compose
-Installation
-Clone the repository:
+---
 
-bash
-Copy code
-git clone <repository-url>
-cd water-gas-reader
-Install dependencies:
+## **Features**
+- **`POST /upload`**: Upload an image to be processed and read by the Gemini API.
+- **`PATCH /confirm`**: Confirm or correct the reading value for a given measurement.
+- **`GET /<customer code>/list`**: Retrieve a list of measurements for a specified customer, with optional filtering by measurement type.
 
-bash
-Copy code
-npm install
-Set up environment variables:
+---
 
-Create a .env file in the root directory with the following content:
-GEMINI_API_KEY=<your-gemini-api-key>
-PORT
-MONGODB_URI
+## **Setup**
 
-plaintext
-Copy code
-Build and run the application with Docker:
+### **Prerequisites**
+- Node.js (v18 or later)
+- Docker
+- Docker Compose
 
-bash
-Copy code
-docker-compose up --build
-This command will build the Docker images and start the application along with a MongoDB container.
+### **Installation**
 
-API Endpoints
-POST /upload
-Description: Upload an image in base64 format to be processed by the Gemini API.
+1. **Clone the repository:**
 
-Request Body:
+    ```bash
+    git clone <repository-url>
+    cd water-gas-reader
+    ```
 
-json
-Copy code
-{
-  "image": "base64",
-  "customer_code": "string",
-  "measure_datetime": "datetime",
-  "measure_type": "WATER" or "GAS"
-}
-Response:
+2. **Install dependencies:**
 
-200 OK:
+    ```bash
+    npm install
+    ```
 
-json
-Copy code
-{
-  "image_url": "string",
-  "measure_value": integer,
-  "measure_uuid": "string"
-}
-400 Bad Request:
+3. **Set up environment variables:**
 
-json
-Copy code
-{
-  "error_code": "INVALID_DATA",
-  "error_description": "<description>"
-}
-409 Conflict:
+    Create a `.env` file in the root directory with the following content:
+    
+    ```plaintext
+    GEMINI_API_KEY=<your-gemini-api-key>
+    PORT=<your-port>
+    MONGODB_URI=<your-mongodb-uri>
+    ```
 
-json
-Copy code
-{
-  "error_code": "DOUBLE_REPORT",
-  "error_description": "Leitura do mês já realizada"
-}
-PATCH /confirm
-Description: Confirm or correct the value read for a specific measurement.
+4. **Build and run the application with Docker:**
 
-Request Body:
+    ```bash
+    docker-compose up --build
+    ```
 
-json
-Copy code
-{
-  "measure_uuid": "string",
-  "confirmed_value": integer
-}
-Response:
+    This command will build the Docker images and start the application along with a MongoDB container.
 
-200 OK:
+---
 
-json
-Copy code
-{
-  "success": true
-}
-400 Bad Request:
+## **API Endpoints**
 
-json
-Copy code
-{
-  "error_code": "INVALID_DATA",
-  "error_description": "<description>"
-}
-404 Not Found:
+### **POST /upload**
+**Description**: Upload an image in base64 format to be processed by the Gemini API.
 
-json
-Copy code
-{
-  "error_code": "MEASURE_NOT_FOUND",
-  "error_description": "Leitura não encontrada"
-}
-409 Conflict:
+**Status Codes:**
+- **200 OK**: Successfully processed the image and returned the reading information.
+- **400 Bad Request**: The request was invalid or missing required data.
+- **409 Conflict**: A conflict occurred, such as a duplicate report.
 
-json
-Copy code
-{
-  "error_code": "CONFIRMATION_DUPLICATE",
-  "error_description": "Leitura já confirmada"
-}
-GET /<customer code>/list
-Description: List measurements for a specific customer, with optional filtering by measurement type.
+### **PATCH /confirm**
+**Description**: Confirm or correct the value read for a specific measurement.
 
-Query Parameters:
+**Status Codes:**
+- **200 OK**: Successfully confirmed or corrected the measurement value.
+- **400 Bad Request**: The request was invalid or missing required data.
+- **404 Not Found**: The specified measurement was not found.
+- **409 Conflict**: A conflict occurred, such as a duplicate confirmation.
 
-measure_type (optional): "WATER" or "GAS"
-Response:
 
-200 OK:
+### **GET /<customer code>/list**
+**Description**: Retrieve a list of measurements for a specified customer, with optional filtering by measurement type.
 
-json
-Copy code
-{
-  "customer_code": "string",
-  "measures": [
-    {
-      "measure_uuid": "string",
-      "measure_datetime": "datetime",
-      "measure_type": "string",
-      "has_confirmed": boolean,
-      "image_url": "string"
-    }
-  ]
-}
-400 Bad Request:
+**Status Codes:**
+- **200 OK**: Successfully retrieved the list of measurements.
+- **400 Bad Request**: The request was invalid or included an unsupported measurement type.
+- **404 Not Found**: No measurements were found for the specified customer.
 
-json
-Copy code
-{
-  "error_code": "INVALID_TYPE",
-  "error_description": "Tipo de medição não permitida"
-}
-404 Not Found:
 
-json
-Copy code
-{
-  "error_code": "MEASURES_NOT_FOUND",
-  "error_description": "Nenhuma leitura encontrada"
-}
-Testing
-You can manually test the endpoints using tools like Postman or cURL. Ensure that Docker containers are up and running before performing tests.
