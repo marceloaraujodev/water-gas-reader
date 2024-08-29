@@ -4,13 +4,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 // Initialize GoogleAIFileManager with your API_KEY.
-const fileManager = new GoogleAIFileManager(process.env.GOOGLE_AI_STUDIO_API_KEY as string);
+const fileManager = new GoogleAIFileManager(process.env.GEMINI_API_KEY as string);
 
-
-// // will need to create the file path and the for the working image
-// const filePath = path.resolve('src', '../src/public/meter.png');
-// console.log(filePath)
- 
 // Upload the file and specify a display name.
 export async function uploadFile(filePath:string): Promise<UploadFileResponse> {
   try {

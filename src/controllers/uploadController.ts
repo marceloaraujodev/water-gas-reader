@@ -94,7 +94,7 @@ export const upload = async (req: Request, res: Response) => {
 
     // save to the database
     const bill = new Bill({
-      image,
+      image_url: image,
       customerCode,
       measureDateTime: measureDateTime,
       measureType: measureType,
