@@ -79,6 +79,7 @@ export const upload = async (req: Request, res: Response) => {
     // reading result 
     // const imgReadingResult = result(responseMimeType, responseUri);
     const meterValue:string = await result(responseMimeType, responseUri);
+    const clean = meterValue.split(' ')
     console.log('meterValue >>>>',meterValue)
     const meterCount = Number(meterValue);
     console.log('meterCount------', meterCount);
@@ -88,7 +89,7 @@ export const upload = async (req: Request, res: Response) => {
       return res.status(400).json(
         { 
           error_code: "READING_ERROR",
-          error_description: "Ocorreu um erro ao ler a leitura, tente novamente mais tarde."
+          error_description: "Ocorreu um erro na leitura, tente novamente mais tarde."
         }
       );
     }
