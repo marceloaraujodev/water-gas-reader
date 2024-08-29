@@ -9,9 +9,10 @@ import { saveBase64ImageToTemp } from '../utils/saveBase64ImageToTemp';
 import dotenv from 'dotenv';
 dotenv.config();
 
-mongooseConnect();
 
 export const upload = async (req: Request, res: Response) => {
+  await mongooseConnect();
+
   try {
     const { image, customer_code: customerCode, measure_datetime: measureDateTime, measure_type: measureType } = req.body;
   
@@ -78,9 +79,7 @@ export const upload = async (req: Request, res: Response) => {
     // const imgReadingResult = result(responseMimeType, responseUri);
     const meterValue:string = await result(responseMimeType, responseUri);
 
-    console.log('meterValue >>>>',meterValue)
     const meterCount = Number(meterValue);
-    console.log('meterCount------', meterCount);
   
     // reading error
     if(!Number(meterCount)){
