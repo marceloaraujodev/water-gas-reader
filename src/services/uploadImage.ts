@@ -12,7 +12,7 @@ const filePath = path.resolve('src', '../src/public/meter.png');
 console.log(filePath)
  
 // Upload the file and specify a display name.
-export async function uploadFile(): Promise<UploadFileResponse> {
+export async function uploadFile(image:string): Promise<UploadFileResponse> {
   try {
     const uploadResponse = await fileManager.uploadFile(filePath, {
       mimeType: "image/jpeg",

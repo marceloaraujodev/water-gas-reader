@@ -6,6 +6,7 @@ interface IBill extends Document {
   measureDateTime: Date;
   measureType: MeasureType;
   read: Boolean;
+  measure_uuid: string;
 }
 
 enum MeasureType {
@@ -31,6 +32,11 @@ const BillSchema: Schema<IBill> = new mongoose.Schema({
     enum: Object.values(MeasureType),
     required: true,
   },
+  measure_uuid: {
+    type: String,
+    required: true,
+    unique: true,
+  }
 }, {
   timestamps: true
 });
