@@ -4,8 +4,6 @@ import Bill from '../models/bill';
 import { isValidBase64Image, isValidString, isValidDate, isValidMeasureType } from '../utils/validation';
 import { uploadFile } from '../services/uploadImage';
 import { result } from '../services/requestReading';
-import path from 'path';
-import { GoogleAIFileManager } from "@google/generative-ai/server";
 import { v4 as uuidv4 } from 'uuid';
 import { saveBase64ImageToTemp } from '../utils/saveBase64ImageToTemp';
 import dotenv from 'dotenv';
@@ -79,7 +77,7 @@ export const upload = async (req: Request, res: Response) => {
     // reading result 
     // const imgReadingResult = result(responseMimeType, responseUri);
     const meterValue:string = await result(responseMimeType, responseUri);
-    const clean = meterValue.split(' ')
+
     console.log('meterValue >>>>',meterValue)
     const meterCount = Number(meterValue);
     console.log('meterCount------', meterCount);
@@ -118,7 +116,6 @@ export const upload = async (req: Request, res: Response) => {
     
   } catch (error) {
     return res.status(500).json({
-      //// requirements 
       error_code: "Internal Server Error, please try again",
       error_description: "Ocorreu um erro interno no servidor, por favor tente novamente."
     })

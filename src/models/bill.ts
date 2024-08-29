@@ -8,6 +8,7 @@ interface IBill extends Document {
   read: Boolean;
   measure_uuid: string;
   measurement: number;
+  confirmed_value: boolean;
 }
 
 enum MeasureType {
@@ -41,7 +42,11 @@ const BillSchema: Schema<IBill> = new mongoose.Schema({
   measurement: {
     type: Number,
     required: true,
-  }
+  },
+  confirmed_value: {
+    type: Boolean,
+    default: false,
+  },
 }, {
   timestamps: true
 });

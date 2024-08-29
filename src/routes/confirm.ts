@@ -1,9 +1,9 @@
 import express from 'express';
-import { upload } from '../controllers/uploadController';
+import { confirm } from '../controllers/confirmController';
 
 const router = express.Router();
 
 // Define routes
-router.route('/upload').post(upload)
+router.route('/confirm').patch(confirm)
 
 export default router;

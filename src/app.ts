@@ -4,6 +4,7 @@ import fileUpload from 'express-fileupload';
 
 // routes import
 import uploadRoute from './routes/upload';
+import confirmRoute from './routes/confirm';
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.use(fileUpload({
 
 //connect routes
 app.use('/api/v1', uploadRoute)
+app.use('/api/v1', confirmRoute)
 
 
 export default app;
