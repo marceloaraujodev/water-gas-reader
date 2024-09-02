@@ -49,6 +49,7 @@ export const upload = async (req: Request, res: Response) => {
   
     // convert date string to date object for validity and methods usability
     const measureDate = new Date(measureDateTime)
+    console.log('converted measureDateTime:', measureDate)
   
     // gets date and month from the converted date object
     const year = measureDate.getFullYear();
@@ -81,11 +82,12 @@ export const upload = async (req: Request, res: Response) => {
   
     // receives the base64 encoded string and sends to the function to be stored in a temp folder
     const filePath = saveBase64ImageToTemp(req.body.image)
+    console.log('filePath:', filePath)
   
     // LLM file uploading - file path needs to be change hard coded for now
     const responseUpload = await uploadFile(filePath);
     // receive response from LLM | what I receive from LLM will return inthe response
-    console.log(responseUpload)
+    console.log('responseUpload: ', responseUpload)
   
     const responseMimeType = responseUpload.file.mimeType;
     const responseUri = responseUpload.file.uri;
@@ -95,7 +97,7 @@ export const upload = async (req: Request, res: Response) => {
     const meterValue:string = await result(responseMimeType, responseUri);
 
     const meterCount = Number(meterValue);
-  
+    console.log('meterCount: ', meterCount)
     // reading error
     if(!Number(meterCount)){
       return res.status(400).json(
@@ -117,7 +119,9 @@ export const upload = async (req: Request, res: Response) => {
     });
   
     // saves document on DB - Only 2 documents per customer per month will be created
-    bill.save();
+    await bill.save();
+
+    console.log('bill created successfully: ', bill)
   
     // if all are successful return this
     return res.status(200).json({
