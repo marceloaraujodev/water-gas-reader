@@ -14,7 +14,7 @@ const app = express();
 
 // CORS
 app.use(cors({
-  origin: 'http://localhost:5173',  
+  origin: ['http://localhost:5173', 'https://water-gas-reader-client.onrender.com/'],
   methods: 'GET,POST,PUT,DELETE',
   allowedHeaders: ['Content-Type,Authorization', 'Access-Control-Allow-Origin']
 }));
