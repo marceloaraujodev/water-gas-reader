@@ -81,9 +81,11 @@ export const upload = async (req: Request, res: Response) => {
   
     // receives the base64 encoded string and sends to the function to be stored in a temp folder
     const filePath = saveBase64ImageToTemp(req.body.image)
+    console.log('File Path:', filePath);
   
     // LLM file uploading - file path needs to be change hard coded for now
     const responseUpload = await uploadFile(filePath);
+    console.log('response upload >>>>>>',responseUpload)
     // receive response from LLM | what I receive from LLM will return inthe response
     console.log('--------------------',responseUpload)
   
@@ -117,7 +119,7 @@ export const upload = async (req: Request, res: Response) => {
     });
   
     // saves document on DB - Only 2 documents per customer per month will be created
-    bill.save();
+    await bill.save();
   
     // if all are successful return this
     return res.status(200).json({
