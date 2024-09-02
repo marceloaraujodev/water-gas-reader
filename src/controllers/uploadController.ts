@@ -22,19 +22,11 @@ export const upload = async (req: Request, res: Response) => {
       measure_type: string // 'WATER' | 'GAS'
     } = req.body;
 
-    console.log({
-      image, customerCode, measureDateTime, measureType
-    });
-
     // validate data returns true or false
     const isImageTypeValid = isValidBase64Image(image)
     const isCustomerCodeValid = isValidString(customerCode)
     const isMeasureDateTimeValid = isValidDate(measureDateTime)
     const isMeasureTypeValid = isValidMeasureType(measureType)
-
-    console.log({
-      isImageTypeValid, isCustomerCodeValid, isMeasureDateTimeValid, isMeasureTypeValid
-    });
    
     // safe guards for inputs ✔️
     if (!isImageTypeValid || !isCustomerCodeValid || !isMeasureDateTimeValid || !isMeasureTypeValid){
@@ -49,7 +41,6 @@ export const upload = async (req: Request, res: Response) => {
   
     // convert date string to date object for validity and methods usability
     const measureDate = new Date(measureDateTime)
-    console.log('converted measureDateTime:', measureDate)
   
     // gets date and month from the converted date object
     const year = measureDate.getFullYear();
@@ -86,19 +77,17 @@ export const upload = async (req: Request, res: Response) => {
   
     // LLM file uploading - file path needs to be change hard coded for now
     const responseUpload = await uploadFile(filePath);
+
     // receive response from LLM | what I receive from LLM will return inthe response
-    console.log('responseUpload: ', responseUpload)
-  
     const responseMimeType = responseUpload.file.mimeType;
     const responseUri = responseUpload.file.uri;
   
     // reading result 
     // const imgReadingResult = result(responseMimeType, responseUri);
     const meterValue:string = await result(responseMimeType, responseUri);
-    console.log('meterValue: ', meterValue)
 
     const meterCount:number = parseInt(meterValue);
-    console.log('meterCount: ', meterCount)
+
     // reading error
     if(!Number(meterCount)){
       return res.status(400).json(
@@ -121,8 +110,6 @@ export const upload = async (req: Request, res: Response) => {
   
     // saves document on DB - Only 2 documents per customer per month will be created
     await bill.save();
-
-    console.log('bill created successfully: ', bill)
   
     // if all are successful return this
     return res.status(200).json({
