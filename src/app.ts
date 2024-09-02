@@ -14,9 +14,9 @@ const app = express();
 
 // CORS
 app.use(cors({
-  origin:  'https://water-gas-reader-client.onrender.com/',
+  origin:  'https://water-gas-reader-client.onrender.com',
   methods: 'GET,POST,PUT,DELETE',
-  allowedHeaders: ['Content-Type,Authorization', 'Access-Control-Allow-Origin']
+  allowedHeaders: ['Content-Type','Authorization']
 }));
 
 app.use(express.json({ limit: '50mb' }));
