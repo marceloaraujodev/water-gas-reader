@@ -23,11 +23,11 @@ export async function result(responseMimeType: string, responseUri: string): Pro
         { text: "This is an image from a water meter. Please return only the numbers in the image, without any dots or letters, spaces, or other characters. Important only readings and measurements should be retuned" },
       ]);
       
-      console.log(result.response.text());
+      // console.log(result.response.text());
       return result.response.text()
     // Output the generated text to the console
   } catch (error) {
-    console.log(error)
+    console.log('this is an erro:', error)
     return {} as string; // Return a default value or an empty object
   }
 }

@@ -12,33 +12,28 @@ dotenv.config();
 
 export const upload = async (req: Request, res: Response) => {
   await mongooseConnect();
+  console.log('Received payload:', req.body);
 
   try {
-    const { image, customer_code: customerCode, measure_datetime: measureDateTime, measure_type: measureType }: {
-      image: string,
+    const { image, customer_code: customerCode, measure_datetime: measureDateTime, measure_type: measureType }:{
+      image:string,
       customer_code: string,
       measure_datetime: string,
-      measure_type: string,
+      measure_type: string // 'WATER' | 'GAS'
     } = req.body;
 
-    // console.log({ image, customerCode, measureDateTime, measureType});
+    console.log({
+      image, customerCode, measureDateTime, measureType
+    });
 
     // validate data returns true or false
     const isImageTypeValid = isValidBase64Image(image)
     const isCustomerCodeValid = isValidString(customerCode)
     const isMeasureDateTimeValid = isValidDate(measureDateTime)
     const isMeasureTypeValid = isValidMeasureType(measureType)
-
-    // console.log({
-    //   isImageTypeValid,
-    //   isCustomerCodeValid,
-    //   isMeasureDateTimeValid,
-    //   isMeasureTypeValid,
-    // })
    
     // safe guards for inputs ✔️
     if (!isImageTypeValid || !isCustomerCodeValid || !isMeasureDateTimeValid || !isMeasureTypeValid){
-      console.log('enter error')
       return res.status(400).json(
         { 
           error_code: "INVALID_DATA",
@@ -46,7 +41,7 @@ export const upload = async (req: Request, res: Response) => {
         }
       );
     }
-  // console.log('paste this point');
+  
     // convert date string to date object for validity and methods usability
     const measureDate = new Date(measureDateTime)
   
@@ -81,13 +76,11 @@ export const upload = async (req: Request, res: Response) => {
   
     // receives the base64 encoded string and sends to the function to be stored in a temp folder
     const filePath = saveBase64ImageToTemp(req.body.image)
-    // console.log('File Path:', filePath);
   
     // LLM file uploading - file path needs to be change hard coded for now
     const responseUpload = await uploadFile(filePath);
-    // console.log('response upload >>>>>>',responseUpload)
     // receive response from LLM | what I receive from LLM will return inthe response
-    // console.log('--------------------',responseUpload)
+    console.log(responseUpload)
   
     const responseMimeType = responseUpload.file.mimeType;
     const responseUri = responseUpload.file.uri;
@@ -118,9 +111,8 @@ export const upload = async (req: Request, res: Response) => {
       measurement: meterCount
     });
   
-    // console.log('Bill created:', bill);
     // saves document on DB - Only 2 documents per customer per month will be created
-    await bill.save();
+    bill.save();
   
     // if all are successful return this
     return res.status(200).json({
@@ -130,7 +122,6 @@ export const upload = async (req: Request, res: Response) => {
         measure_uuid: uuidv4(),
         message: 'Operação realizada com sucesso'
     })
-
     
   } catch (error) {
     return res.status(500).json({
