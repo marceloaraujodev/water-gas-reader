@@ -11,13 +11,18 @@ import getListRoute from './routes/getList';
 dotenv.config();
 
 const app = express();
+const allowedOrigins = ['https://water-gas-reader-client.onrender.com', 'http://localhost:5173'];
+// 'https://water-gas-reader-client.onrender.com',
 
 // CORS
 app.use(cors({
-  origin:  'https://water-gas-reader-client.onrender.com',
+  origin:  allowedOrigins,
   methods: 'GET,POST,PUT,DELETE',
   allowedHeaders: ['Content-Type','Authorization']
 }));
+
+// Handle preflight requests
+app.options('*', cors());
 
 app.use(express.json({ limit: '50mb' }));
 // app.use(fileUpload({
