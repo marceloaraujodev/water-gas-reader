@@ -96,7 +96,7 @@ export const upload = async (req: Request, res: Response) => {
     // const imgReadingResult = result(responseMimeType, responseUri);
     const meterValue:string = await result(responseMimeType, responseUri);
 
-    const meterCount = Number(meterValue);
+    const meterCount:number = parseInt(meterValue);
     console.log('meterCount: ', meterCount)
     // reading error
     if(!Number(meterCount)){
