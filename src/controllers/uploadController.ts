@@ -31,9 +31,14 @@ export const upload = async (req: Request, res: Response) => {
     const isCustomerCodeValid = isValidString(customerCode)
     const isMeasureDateTimeValid = isValidDate(measureDateTime)
     const isMeasureTypeValid = isValidMeasureType(measureType)
+
+    console.log({
+      isImageTypeValid, isCustomerCodeValid, isMeasureDateTimeValid, isMeasureTypeValid
+    });
    
     // safe guards for inputs ✔️
     if (!isImageTypeValid || !isCustomerCodeValid || !isMeasureDateTimeValid || !isMeasureTypeValid){
+      console.log('if data is really wrong enter here and print: -> Invalid data')
       return res.status(400).json(
         { 
           error_code: "INVALID_DATA",
