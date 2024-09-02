@@ -21,7 +21,7 @@ export const upload = async (req: Request, res: Response) => {
       measure_type: string,
     } = req.body;
 
-    // console.log({ image, customerCode, measureDateTime, measureType});
+    console.log({ image, customerCode, measureDateTime, measureType});
 
     // validate data returns true or false
     const isImageTypeValid = isValidBase64Image(image)
