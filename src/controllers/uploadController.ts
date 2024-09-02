@@ -38,6 +38,7 @@ export const upload = async (req: Request, res: Response) => {
    
     // safe guards for inputs ✔️
     if (!isImageTypeValid || !isCustomerCodeValid || !isMeasureDateTimeValid || !isMeasureTypeValid){
+      console.log('enter error')
       return res.status(400).json(
         { 
           error_code: "INVALID_DATA",
@@ -45,7 +46,7 @@ export const upload = async (req: Request, res: Response) => {
         }
       );
     }
-  
+  console.log('paste this piont');
     // convert date string to date object for validity and methods usability
     const measureDate = new Date(measureDateTime)
   
@@ -84,7 +85,7 @@ export const upload = async (req: Request, res: Response) => {
     // LLM file uploading - file path needs to be change hard coded for now
     const responseUpload = await uploadFile(filePath);
     // receive response from LLM | what I receive from LLM will return inthe response
-    console.log(responseUpload)
+    console.log('--------------------',responseUpload)
   
     const responseMimeType = responseUpload.file.mimeType;
     const responseUri = responseUpload.file.uri;
