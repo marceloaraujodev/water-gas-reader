@@ -95,6 +95,7 @@ export const upload = async (req: Request, res: Response) => {
     // reading result 
     // const imgReadingResult = result(responseMimeType, responseUri);
     const meterValue:string = await result(responseMimeType, responseUri);
+    console.log('meterValue: ', meterValue)
 
     const meterCount:number = parseInt(meterValue);
     console.log('meterCount: ', meterCount)
@@ -110,7 +111,7 @@ export const upload = async (req: Request, res: Response) => {
 
     // save to the database
     const bill = new Bill({
-      image_url: image,
+      image_url: responseUpload.file.uri,
       customerCode,
       measureDateTime: measureDateTime,
       measureType: measureType,
