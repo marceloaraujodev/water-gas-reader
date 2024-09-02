@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 // import fileUpload from 'express-fileupload';
 
 // routes import
@@ -10,6 +11,14 @@ import getListRoute from './routes/getList';
 dotenv.config();
 
 const app = express();
+
+// CORS
+app.use(cors({
+  origin: 'http://localhost:5173',  
+  methods: 'GET,POST,PUT,DELETE',
+  allowedHeaders: ['Content-Type,Authorization', 'Access-Control-Allow-Origin']
+}));
+
 app.use(express.json({ limit: '50mb' }));
 // app.use(fileUpload({
 //   useTempFiles: true,

@@ -14,13 +14,27 @@ export const upload = async (req: Request, res: Response) => {
   await mongooseConnect();
 
   try {
-    const { image, customer_code: customerCode, measure_datetime: measureDateTime, measure_type: measureType } = req.body;
-  
+    const { image, customer_code: customerCode, measure_datetime: measureDateTime, measure_type: measureType }: {
+      image: string,
+      customer_code: string,
+      measure_datetime: string,
+      measure_type: string,
+    } = req.body;
+
+    // console.log({ image, customerCode, measureDateTime, measureType});
+
     // validate data returns true or false
     const isImageTypeValid = isValidBase64Image(image)
     const isCustomerCodeValid = isValidString(customerCode)
     const isMeasureDateTimeValid = isValidDate(measureDateTime)
     const isMeasureTypeValid = isValidMeasureType(measureType)
+
+    console.log({
+      isImageTypeValid,
+      isCustomerCodeValid,
+      isMeasureDateTimeValid,
+      isMeasureTypeValid,
+    })
    
     // safe guards for inputs ✔️
     if (!isImageTypeValid || !isCustomerCodeValid || !isMeasureDateTimeValid || !isMeasureTypeValid){
@@ -112,6 +126,7 @@ export const upload = async (req: Request, res: Response) => {
         measure_uuid: uuidv4(),
         message: 'Operação realizada com sucesso'
     })
+
     
   } catch (error) {
     return res.status(500).json({
